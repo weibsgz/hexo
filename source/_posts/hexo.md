@@ -114,6 +114,8 @@ hexo deploy
     hexo generate
 
     hexo deploy
+
+    或者 hexo g -d
 ```
 
 一些常用命令：

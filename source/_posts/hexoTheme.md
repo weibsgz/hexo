@@ -2,6 +2,7 @@
 title: hexo 主题使用
 date: 2017-07-15 15:23:53
 tags: hexo
+category: "hexo"  # 分类为 hexo
 ---
 
 
