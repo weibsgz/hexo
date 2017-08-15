@@ -5,6 +5,76 @@ tags: vue
 category: "vue" 
 ---
 
+### **封装echarts组件**
+在父组件 data里 必须定义好图形初始的必须值，否则报错
+```
+ lineChartsData:{
+                id:'lineChart',
+                height : 500,
+                option:{
+                    "xAxis":{
+                        "name":"",
+                        "data":[]
+                    },
+                    "series":{
+                        "name":"",
+                        "data":[]
+                    }
+                }
+  },
+
+```
+
+传递数据只改变option的值 需要在封装的echarts组件里 watch
+```
+watch:{
+        lineChartsData: {
+          handler: function (val, oldVal) { 
+            console.log("watch")
+            this.initLineChart()
+          },
+          deep: true  //增加deep 观察对象的子对象变化
+        }
+    }
+
+```
+
+### **element-ui 的样式需要写在public.css里  因为如果写在封装的 elementui组件里 即使去掉scoped 打包build后还是不能覆盖原有样式**
+
+
+
+### **给分页组件传递当前页page 分页组件内部要通过watch 把page变成currentPage 否则会有警告 大义是子组件通过不正确的方法更改了父组件的值**
+父组件：
+```
+    <pagination
+            :pageSize = "pageSize"
+            :total="total"
+            :layout = "layout"
+            :page="page"
+            @pageChange="pageChange"
+            >
+    </pagination>
+```
+
+分页组件:
+```
+    <el-pagination
+        :page-size="pageSize"
+        :total="total"
+        :layout = "layout"
+        :current-page.sync = "currentPage"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        >
+    </el-pagination>
+
+      watch: {
+        page: function (val, oldVal) {
+              this.currentPage = val
+           }
+      }
+```
+
 
 
 
