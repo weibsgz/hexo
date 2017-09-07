@@ -7,9 +7,6 @@ category: "js"  # 分类为 hexo
 
 
 
-
-[原文链接](http://liubin.org/promises-book/#promises-overview)
-
 ### **基本介绍**
 
 Promise类似于 XMLHttpRequest，从构造函数 Promise 来创建一个新建新promise对象作为接口。
@@ -204,6 +201,7 @@ Promise.resolve(1); 传递 1 给 increment 函数
 
 
 
+[原文链接](http://liubin.org/promises-book/#promises-overview)
 
 
 
