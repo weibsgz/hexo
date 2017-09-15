@@ -197,6 +197,17 @@ assetsPublicPath 指静态资源的引用路径，默认配置为 /，即网站�
 ```
 没错！就是一个 . 的问题。ㄟ( ▔, ▔ )ㄏ
 
+
+### **打包后背景图显示不出来的问题**
+
+
+
+![百度](/uploads/vue2.jpg)
+
+
+![百度](/uploads/vue3.jpg)
+
+
 ### **使用vue-cli开发时跨域问题**
 
 打开config文件夹下的index.js,配置proxyTable：
