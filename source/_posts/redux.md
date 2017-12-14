@@ -27,8 +27,9 @@ category: "react"  # 分类为 react
 
   异步需要手动的dispatch  不管同步异步 都要通过dispatch修改action 只有action能告诉reducer 如何改变state
 
+  applyMiddleware(thunk) 这个中间件的作用就是为了处理异步的action(比如需要向后台发送数据)
 
-
+7。withRouter可以包装任何自定义组件，将react-router 的 history,location,match 三个对象传入 因为 只有Router 的component组件能够自动带有三个属性
 
 
 

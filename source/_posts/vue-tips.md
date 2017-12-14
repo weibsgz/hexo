@@ -77,6 +77,34 @@ watch:{
 ```
 
 
+### **vue开发中，父组件添加scoped之后。解决在父组件中无法修改子组件样式问题。**
+https://zhuanlan.zhihu.com/p/29266022
+父组件
+```
+<gHeader></gHeader>
+
+<style>
+两种写法
+.g-header /deep/ span.name{
+
+}
+
+.g-header >>> span.time{
+
+}
+</style>
+
+```
+
+子组件
+```
+<template>
+  <div class="g-header">
+    <span class="name"></span>
+    <span class="time"></span>
+  </div>
+</template>
+```
 
 
 ### **polyfill 与 transform-runtime**
