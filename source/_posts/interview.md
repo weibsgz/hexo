@@ -147,6 +147,26 @@ var oli = document.getElementsByTagName('li');
      console.log(i); // 5
 ```
 
+
+### **经典问题**
+```
+for(var i=0; i<5;i++){
+          listArr[i].onclick = (function(n){
+              return function() {
+                console.log(n)
+              }
+          })(i)
+       }
+
+```
+
+1.为什么不写闭包就输出5  
+因为js 是单线程的 循环是同步，先执行， onclick指向的匿名函数需要onclick才执行所以是异步，后执行，var 没有块级作用域，所以循环到5后 window.i ==5  因此，这时你点击任何一个li，都要alert(i); 局部作用域内没有声明i变量，因此会追溯到全局作用域的i，所以弹出的都是5。可以用let解决
+
+2.为什么写闭包就正确了
+循环的时候 已经将listArr[i] 这里的i 变成 0,1,2,3,4 ，click 时候 function 内找 n 没有，找向上层定义时的作用域，里面形参 n 是 for 时候赋值的当时的 i 值。
+
+
 ### **提升页面性能的方法**
 
 1.资源的压缩合并，减少HTTP请求

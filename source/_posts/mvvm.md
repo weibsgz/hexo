@@ -20,6 +20,18 @@ obj:对象
 prop:要修改的属性
 descripor:定义或者修改的属性的描述
 会直接在一个对象上定义一个新属性或对已有的属性修改，然后返回这个对象
+比如vue 的data就是一个对象，所以可以对里边定义的属性进行双向绑定
+
+
+
+### **双向绑定设计模式**
+
+data => observer(Object.defineProperty) => watcher => view
+
+
+
+
+### **实现一个简单的双向绑定**
 ```
 <input id="objInput" type="" name="">
 <div id="area"></div>
