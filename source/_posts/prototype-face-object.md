@@ -14,6 +14,33 @@ category: "js"
 4.判断构造函数的返回结果是对象类型就返回这个对象，前边就废了，如果不是就返回原来的instance
 
 
+```
+{
+        function M() {
+            this.a = 1;
+        }
+        
+        let o = new M()
+        //函数的prototype有个constructor属性 指向本身的构造函数 如果重新定义了prototype则为false;  
+        M.prototype.constructor === M //true
+        // js里所有的对象都有proto属性，指向构造该对象的构造函数的原型（用于继承）
+        //原型prototype是一个指针，指向一个对象，这个对象的用途就是包含所有实例共享的属性和方法    
+        o.__proto__ === M.prototype //true
+        M.__proto__ === Function.prototype //true 一层一层向上找
+            
+        //instanceof 的原理就是判断实例对象的__proto__和 构造函数的原型是不是引用同一个地址
+        M.prototype.__proto__ === Object.prototype //true
+        
+        console.log(o instanceof M) //true
+        console.log(o instanceof Object) //true
+
+        // 那么如何判断 o 到底是谁创建的呢                                
+        console.log(o.__proto__.constructor === M) //true
+
+    }
+
+```
+
 ### **继承方式**
 
 1.借助构造函数 实现继承（call),但是父类的原型链的方法 子类无法继承，只能继承父类构造函数里边的属性和方法。
