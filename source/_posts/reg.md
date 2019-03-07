@@ -129,3 +129,93 @@ category: "js"
         }
 
 ```
+
+
+```
+// 保存：删除关闭按钮
+var reg = /<div\s+data\-del\=\"(\w+)\"[\s\S]+?<\/div>|<span\s+data\-del=\"(\w+)\"[^>]+><\/span>/g; 
+// 替换前：
+// 图片：
+`<div data-del="img" class="_editor_title _editor_img_title">
+  <span data-del="img" class="_editor_close"></span>
+</div>` 
+// 视频
+`<div data-del="video" class="_editor_title _editor_video_title">
+  <span data-del="video" class="_editor_title_btn" data-ind="1551928713346">添加封面图</span>
+  <span data-del="video" class="_editor_close"></span>
+</div>`
+// 替换后：
+// 图片
+`<!-- img del btn -->`
+// 视频
+`<!-- video del btn -->`
+
+/////////////////////////////////////////////////////////////////////////
+
+// 保存：图注
+var reg = /<div[^>]*><input\s+class\=\"_editor_input\"[^>]+data\-value=\"(.*?)\"[^>]+\/>.+?<\/span>[^<>]*<\/div>/g;
+// 替换前：
+`<div class="_editor_label">
+  <input class="_editor_input"  value="" data-value="abc"  placeholder="请输入图注1-60个汉字" autocomplete="off"/>
+  <span class="_editor_stat">3/60</span>
+</div>`
+// 替换后：
+// input 如果有值：
+`<!-- del input start -->
+<div class="_editor_label">
+  <span>图注</span>
+</div>
+<!-- del input end -->`
+// input 没有值：
+`<!-- del input empty -->`
+
+/////////////////////////////////////////////////////////////////////////
+
+// 编辑：视频图片占位图反显
+var reg = /<video[^>]+src=\"([^>]+?)\"[^>]*><\/video>/g;
+// 替换前：
+`<video class="edui-upload-video video-js" controls="" preload="none" width="0" height="0" src="gg" data-setup="{}"></video>`
+// 替换后：
+`<img class="edui-upload-video" _url="gg" src="./src/images/convertVideo.jpg" alt="">`
+
+/////////////////////////////////////////////////////////////////////////
+
+// 编辑：图注反显
+var reg = /<\!\-\- del input start \-\->.*?<span>([^<>]*?)<\/span>.*?<\!\-\- del input end \-\->|<\!\-\- del input empty \-\->/g;
+// 替换前：
+// input 如果有值：
+`<!-- del input start -->
+<div class="_editor_label">
+  <span>图注</span>
+</div>
+<!-- del input end -->`
+// input 没有值：
+`<!-- del input empty -->`
+// 替换后：
+`<div class="_editor_label">
+  <input class="_editor_input"  value="" data-value="图注"  placeholder="请输入图注1-60个汉字" autocomplete="off"/>
+  <span class="_editor_stat">3/60</span>
+</div>`
+
+/////////////////////////////////////////////////////////////////////////
+
+// 编辑：关闭按钮反显
+var reg = /<!--.*?(img|video).*?del btn -->/g
+// 替换前：
+// 图片
+`<!-- img del btn -->`
+// 视频
+`<!-- video del btn -->`
+// 替换后：
+// 图片：
+`<div data-del="img" class="_editor_title _editor_img_title">
+  <span data-del="img" class="_editor_close"></span>
+</div>` 
+// 视频
+`<div data-del="video" class="_editor_title _editor_video_title">
+  <span data-del="video" class="_editor_title_btn" data-ind="1551928713346">添加封面图</span>
+  <span data-del="video" class="_editor_close"></span>
+</div>`
+
+
+```
