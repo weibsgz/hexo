@@ -28,13 +28,30 @@ http协议特点：
 
 
 ### **HTTP协议工作流程**
-
+3次握手
 客户端和服务器之间建立一条连接
 连接建立后，客户端向服务器发起一个请求（request）
 服务器收到一个请求后，给客户端一个响应（应答，response）
 客户端收到响应后做进一步处理
 
 
+### OPTIONS请求是什么
+OPTIONS是一个预请求，跨域的情况下，如果有以下情况发生，则会先发送OPTIONS，服务端允许才会
+发送真正的请求，否则不会发送
+1、请求方法不是GET/HEAD/POST
+2、POST请求的Content-Type并非application/x-www-form-urlencoded, multipart/form-data, 或text/plain
+3、请求设置了自定义的header字段
+
+### 301 302区别
+301和302都在response头里设置，301是永久重定向，302是临时重定向
+301表示这个请求第一次请求服务器后，以后再发送就不询问服务器了，客户端直接跳转到新地址
+302每次还是要访问服务器看有没有新的地址跳转
+
+### CSP 安全策略
+缓解某些类型的攻击，包括跨站脚本 (XSS) 和数据注入等攻击。 
+后端response头设置X-Content-Security-Policy 
+也可在META标签内设置 `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';script-src userscripts.example.com">`
+一个网站管理者想要所有内容均来自站点的同一个源 (不包括其子域名)所有脚本必须从特定主机服务器获取可信的代码.
 
 ### **前端后端如何跨域通信**
 
