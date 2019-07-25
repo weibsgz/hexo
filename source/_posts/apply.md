@@ -43,5 +43,12 @@ class Test {
 
     }
 ```
+arguments 是一个对应于传递给函数的参数的类数组对象
+还可以使用Array.from()方法或扩展运算符将参数转换为真实数组：
+```
+var args = Array.from(arguments);
+var args = [...arguments];
+```
+
 以上代码如果执行DO3方法 不用apply 那么传入的无论是函数还是数字就不是一个单一的函数或者数字
-会被arguments包一层
+会被arguments包一层或者用do4方法，将数组解构
