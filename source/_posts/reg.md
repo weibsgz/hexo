@@ -219,3 +219,19 @@ var reg = /<!--.*?(img|video).*?del btn -->/g
 
 
 ```
+
+```
+
+var url =  `https://aikahao.xcar.com.cn/video/151932.html` ;    
+var reg = /video\/(\d*).html/im
+var r = url.match(reg)
+
+console.log(r) //["video/151932.html", "151932", index: 28, input: "https://aikahao.xcar.com.cn/video/151932.html", groups: undefined]
+
+var url2 =  'https://aikahao.xcar.com.cn/video?item=333333333.html';
+
+var reg2 = /\?(?:id|item)=(\d*)/i //?:match时候不要这个分组
+var r2 = url2.match(reg2);
+console.log(r2) //["?item=333333333", "333333333", index: 33, input: "https://aikahao.xcar.com.cn/video?item=333333333.html", groups: undefined]
+
+```
