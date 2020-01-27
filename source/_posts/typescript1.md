@@ -1,5 +1,5 @@
 ---
-title: 正则学习
+title: typescript 基础
 date: 2020-01-27 14:13:23
 tags: js
 category: "js"
