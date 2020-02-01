@@ -122,6 +122,48 @@ namespace Home {
 // }
 
 
+//方法装饰器 首先装饰器需要打开tsconfig.json的配置 experimentalDecorators/emitDecoratorMetadata
+//装饰器都是函数
+//方法装饰器 如果是普通方法 target对应调用类的prototype
+//如果是静态方法 target 对应的是类的构造函数
+//key对应的是方法名
+//descriptor.value对应的是方法本身
+const user: any = undefined;
+//用工厂方法可以穿参
+function catchError(msg: string) {
+  return function(target: any, key: string, descriptor: PropertyDescriptor) {
+    //打印出 Test { getName: [Function], getAge: [Function] } 'getName' [Function]
+    console.log(target, key, descriptor.value);
+    //重写getName,getAge方法
+    //这里要重新制定下当前方法 要不下边直接用descriptor.value()会报错
+    const fn = descriptor.value;
+    descriptor.value = function() {
+      try {
+        fn();
+      } catch (e) {
+        console.log(msg);
+      }
+    };
+  };
+}
+class Test {
+  @catchError("userInfo.name 不存在")
+  getName() {
+    return user.name;
+  }
+  @catchError("userInfo.age 不存在")
+  getAge() {
+    try {
+      return new user.age();
+    } catch (e) {
+      console.log("user.age bu cun zai");
+    }
+  }
+}
+
+const test = new Test();
+test.getName();
+
 ```
 
 ### tsconfig.json 配置
