@@ -6,6 +6,110 @@ category: "js"
 ---
 
 ```
+
+// 参数解构
+function demo({ first, second }: { first: number; second: number }) {
+  return first + second;
+}
+
+console.log(demo({ first: 1, second: 2 }));
+
+//数组
+const arr: (number | string)[] = [1, 2, "3"];
+
+type User = {
+  name: string;
+  age: number;
+};
+const objArr: User[] = [
+  {
+    name: "dell",
+    age: 18
+  }
+];
+
+//元组 tuple 数组中个数，和每个类型是固定的
+const teacherInfo: [string, string, number] = ["dell", "male", 18];
+
+const teacherList: [string, string, number][] = [
+  ["dell", "male", 18],
+  ["boby", "male", 33],
+  ["jenny", "female", 39]
+];
+
+//interface 和 type类型别名的区别是 type也可以表达基础数据类型
+//比如：type person1 = string
+interface Person {
+  name: string;
+  age?: number;
+  [propName: string]: any; //今后可能会有不可预知的属性 只要KEY是STRING，值是ANY就可以
+  //如果不写 下边我传sex会报错
+  say(): string;
+}
+
+const getName = (person: Person) => {
+  return person.name;
+};
+
+const setName = (person: Person, name: string): void => {
+  person.name = name;
+};
+
+let na = getName({
+  name: "weibin",
+  age: 18,
+  sex: "male", //如果接口没有定义  [propName: string]: any; 会报错 因为未特殊指明有sex
+  say() {
+    return "bark";
+  }
+});
+
+console.log(na);
+
+//类应用接口  implements是对接口的实现 作用就是interface约定好接口的内容 各端自己实现
+class somebody implements Person {
+  name = "dell";
+  say() {
+    return "hello";
+  }
+}
+
+//接口继承
+interface Teacher extends Person {
+  teach(): void;
+}
+
+//定义函数类型的接口
+interface SayHi {
+  (word: string): string;
+}
+
+const say: SayHi = (word: string) => {
+  return word;
+};
+
+//单列
+
+class Demo {
+  private static instance: Demo;
+  //public name: string 这个参数的写法相当于构造函数写了 this.name = name;
+  private constructor(public name: string) {}
+  //static 可以方法直接挂在到类上 而不是类的实例上
+  static getInstance(name: string) {
+    if (!this.instance) {
+      this.instance = new Demo(name);
+    }
+    return this.instance;
+  }
+}
+
+//let demo1 = new Demo()  //报错 因为先执行构造函数 private 外部无法执行
+
+const demo1 = Demo.getInstance("weibin");
+console.log(demo1.name);
+
+
+
  //联合类型
 interface Bird {
   fly: Boolean;
