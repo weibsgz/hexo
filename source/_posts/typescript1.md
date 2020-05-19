@@ -28,6 +28,14 @@ const objArr: User[] = [
   }
 ];
 
+//type 指定传参可以是函数
+type fn = () => string
+function bbb(n:string|fn ) {
+    return 1
+}
+
+bbb(function(){return ''})
+
 //元组 tuple 数组中个数，和每个类型是固定的
 const teacherInfo: [string, string, number] = ["dell", "male", 18];
 
