@@ -209,6 +209,32 @@ const data2 = new DataManager2([
 ]);
 data2.getItem(0);
 
+
+//如果要需要返回参数的长度，又不能指定为数组 （T[]）因为字符串也可以返回长度
+//可以借助接口
+interface IwithLength {
+  length: number
+}
+
+function echoWithLength<T extends IwithLength>(arg: T): T {
+  console.log(arg.length)
+  return arg
+}
+
+//内置类型
+interface Ipserson {
+  name: string
+  age: number
+}
+
+//正常必须写2个属性
+let a: Ipserson = { name: 'weibin', age: 10 }
+
+//使用 Partial内置类型 可以让所有选项变为可选
+type Ipartial = Partial<Ipserson>
+let a1: Ipartial = { name: 'weibin' }
+
+
 //如果有多个命名空间的引用
 ///<reference path="components.ts" />
 //命名空间 就是把方法包裹起来不污染全局，如果内部哪个方法想暴露出去就用export
