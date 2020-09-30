@@ -95,6 +95,7 @@ export default {
     // return data
 
     //如果要返回对象，用展开运算符 需要用 toRefs包装一下，让展开后都变成响应式对象
+    //这样 template中 直接用 count 可以不用 data.count
     const refData = toRefs(data)
     return {
       ...refData
@@ -459,3 +460,318 @@ app.mount('#app')
 import {nextTick,observable} from 'vue'
 ```
 1. 不同于vue2  使用 Vue.nextTick  Vue.observable这样可以treeShaking
+
+
+### hooks & 点击其他地方 让下拉菜单关闭
+
+1. hooks/useClickOutside.js
+```
+//点击任意位置 看是否在指定元素内 （用做点任意位置收起下拉菜单）
+import { ref, onMounted, onUnmounted } from "vue";
+const useClickOutside = (elementRef) => {
+  const isClickOutside = ref(false);
+  const handleClick = (e) => {
+    if (elementRef.value) {
+      isClickOutside.value = (elementRef.value.contains(e.target)) ? false : true
+    }
+  }
+
+  onMounted(() => {
+    document.addEventListener("click", handleClick);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener("click", handleClick);
+  });
+
+  return isClickOutside
+}
+
+export default useClickOutside
+
+```
+
+2. 使用
+```
+<template>
+  <div class="dropdown" ref="dropDownRef">
+    <a href="#" class="btn btn-outline-light my-2 dropdown-toggle" @click.prevent="toggleOpen">
+      {{title}}
+    </a>
+    <ul class="dropdown-menu" :style="{display: 'block'}" v-if="isOpen">
+      <slot></slot>
+    </ul>
+  </div>
+</template>
+
+
+<script lang="ts">
+import { defineComponent, ref, watch } from "vue";
+import useClickOutside from "../hooks/useClickOutside.js";
+export default defineComponent({
+  name: "Dropdown",
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  },
+
+  setup() {
+    const isOpen = ref(false);
+    //ref
+    const dropDownRef = ref(null);
+
+    const isClickOut = useClickOutside(dropDownRef);
+
+    watch(isClickOut, () => {
+      if (isClickOut.value && isOpen.value) {
+        isOpen.value = false;
+      }
+    });
+
+    const toggleOpen = e => {
+      isOpen.value = !isOpen.value;
+    };
+
+    return {
+      isOpen,
+      toggleOpen,
+      dropDownRef  //ref
+    };
+  }
+});
+</script>
+```
+
+### 组件 v-model
+
+v-model语法语法糖拆解
+
+1. 组件内部input 去掉v-model 改成 :value = "inputRef.val"
+2. 组件内部input 增加 @input方法  其实就是不用v-model语法糖了
+3. 组件内部 props上增加modelValue
+4. 定义@input 方法  并在方法内部emit('update:modelValue')
+5. 父组件中使用 `<child v-model="emailVal"></child>`
+
+子组件
+```
+<input :value="inputRef.val" @input="updateValue">
+
+
+export default {
+  props: {   
+    modelValue: String   //组件绑定v-model 必须这么写
+  },
+  setup(props, { emit }) {
+    const inputRef = reactive({
+      val: props.modelValue || '',     
+    });
+
+    const updateValue = (e) => {
+      inputRef.val = e.target.value;
+      //组件中绑定v-model的固定写法emit('update:modelValue'
+      emit('update:modelValue', e.target.value)
+    }
+
+```
+
+父组件
+```
+const emailVal = ref("weibin"); //默认值
+return {
+  emailVal
+}
+
+```
+
+
+### 路由
+1. 路由配置  main.ts
+```
+import { createRouter, createWebHistory } from 'vue-router'
+
+import Home from './views/Home.vue'
+import Login from './views/Login.vue'
+import ColumnDetail from './views/ColumnDetail.vue'
+//替代 2.0 中 的 mode
+const routerHistory = createWebHistory()
+const router = createRouter({
+  history: routerHistory,
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/column/:id',
+      name: "column",
+      component: ColumnDetail
+    }
+  ]
+})
+const app = createApp(App)
+app.use(router)
+app.mount('#app')
+```
+
+
+1. 使用useRoute 获取路由信息  
+```
+import { useRoute } from "vue-router";
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+    return {
+      route
+    };
+  }
+});
+
+//这样页面上就可以通过 route.params.xxx 来获取信息了
+```
+
+2. 使用  userRouter 来设置路由的行为
+```
+import { useRouter } from "vue-router";
+setup() {
+    const router = useRouter();
+    //配置路由设置了 path: '/column/:id', 这里必须有params
+    router.push({ name: "column", params: { id: 1 } });
+  
+  }
+```
+
+
+
+### vuex
+
+1. main.js
+```
+import store from './store'
+
+const app = createApp(App)
+app.use(router)
+app.use(store)
+app.mount('#app')
+```
+
+2. store.js
+```
+import { createStore } from 'vuex'
+import { testData, testPosts } from './testData'
+
+const store = createStore({
+  state: {
+    columns: testData,
+    posts: testPosts,
+    user: { isLogin: false, name: "" }
+  },
+  mutations: {
+    login(state) {
+      state.user = { ...state.user, isLogin: true, name: 'weibin' }
+      console.log(state.user)
+    }
+  },
+  getters: {
+    biggerColumnsLen(state) {
+      return state.columns.filter(c => c.id > 2).length
+    }
+  }
+})
+
+export default store 
+
+```
+
+3. 组件内使用
+```
+import { useStore } from "vuex";
+
+setup() {
+    const store = useStore();
+    const list = computed(() => store.state.columns);
+    console.log(list);
+    return {
+      list: list
+    };
+  }`
+```
+
+commit
+```
+setup() {
+  const store = useStore();
+  store.commit("login");
+}
+
+```
+
+4. getters
+getters的作用是可以将state的值做一些处理 
+否则在多地方用 都要自己写一遍computed处理
+```
+getters: {
+    biggerColumnsLen(state) {
+      return state.columns.filter(c => c.id > 2).length
+    }
+  }
+
+```
+
+```
+   const bigger = computed(() => store.getters.biggerColumnsLen);
+
+   return {
+      bigger
+    };
+
+```
+
+5. getters 也可以是一个函数 传入参数
+
+```
+getters: {   
+    getColumnById(state) {
+      return (id: number) => {
+        return state.columns.find(c => c.id === id)
+      }
+    },
+    getPostsByCid(state) {
+      return (cid: number) => {
+        return state.posts.filter(post => post.columnId === cid)
+      }
+    }
+  }
+
+```
+
+使用 
+
+```
+setup() {
+    
+    const store = useStore();
+    const currentId = +route.params.id;
+
+    const column = computed(() =>
+      store.getters.getColumnById(currentId)
+    );
+
+    const list = computed(() =>
+      store.getters.getPostsByCid(currentId)
+    );
+
+    return {
+      column,
+      list
+    };
+  }
+
+```
