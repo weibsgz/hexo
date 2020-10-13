@@ -204,6 +204,28 @@ export default {
 
 ```
 
+### computed
+
+1. 如果一个对象中包含响应式的属性，需要用computed包裹这个对象返回
+2. 注意 computed  包裹对象后 需要.value
+
+```
+const currentPage = ref(params.currentPage);
+ const requestParams = computed(() => ({
+    currentPage: currentPage.value,
+    pageSize: params.pageSize
+  }))
+
+  //点击加载更多
+  const loadMorePage = () => {
+    store.dispatch(actionName, requestParams.value).then(() => {
+      currentPage.value++;
+    })
+  }
+
+```
+
+
 ### hooks  模块化 
 
 1. 场景：需要抽离一个鼠标位置的功能
