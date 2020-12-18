@@ -220,6 +220,21 @@ var reg = /<!--.*?(img|video).*?del btn -->/g
 
 ```
 
+替换img标签里的style里为 width:100%;height:100% 其他属性不变
+```
+  var str = `<img style="width:200px;line-height:40px" src="https://www.baidu.com" data-xxx="123"/>`
+
+    var _str = ''
+    var reg = /(<img.*style\=\").*?(\".*>)/gi
+    _str = str.replace(reg, '$1width:100%;height:100%$2')
+
+    console.log(_str)//<img style="width:100%;height:100%" src="https://www.baidu.com" data-xxx="123"/>
+
+```
+
+
+
+获取URL上的参数
 ```
 
 var url =  `https://aikahao.xcar.com.cn/video/151932.html` ;    
