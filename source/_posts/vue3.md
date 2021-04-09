@@ -900,3 +900,68 @@ setup() {
   }
 
 ```
+
+### classList 设置在 DOM 上添加和删除一个类
+
+1. 比如 $el对象  （一般是VUE实例关联的DOM对象 本项目中components/base/loading/directive.js中用到）
+   或者 dom 上的 ref    (this.$refs.xxx)
+
+   ```
+      this.$refs.recommend.classList.add('test'),
+      this.$el.classList.remove('recommend')
+   ```
+
+   以上的\$el 指当前 vue 组件上的根节点
+
+   本项目中根据指令封装
+
+   ```
+   export function addClass(el, className) {
+   if (!el.classList.contains(className)) {
+     el.classList.add(className)
+   }
+   }
+
+   export function removeClass(el, className) {
+   el.classList.remove(className)
+   }
+
+   ```
+
+### loading 自定义指令 （含动态参数）
+
+1. 使用
+
+```
+<div class="recommend" v-loading:[loadingText]="loading"></div>
+
+  data() {
+    return {
+      loadingText: '疯狂加载中。。。',
+    }
+  },
+   computed: {
+    loading() {
+      //数据是否加载
+      return !this.sliders.length && !this.albums.length
+    },
+  },
+```
+
+2. main.js 导入
+
+```
+import loadingDirective from '@/components/base/loading/directive'
+createApp(App)
+  .use(store)
+  .use(router)
+  .use(lazyPlugin, {
+    loading: require('@/assets/images/default.png'),
+  })
+  .directive('loading', loadingDirective)
+  .mount('#app')
+
+
+```
+
+3. 具体代码见 vue3-music base/loading
