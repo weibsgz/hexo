@@ -2,8 +2,9 @@
 title: vue3 学习
 date: 2020-09-23 14:13:23
 tags: vue
-category: "vue"
+category: 'vue'
 ---
+
 ### ref 和 reactive
 
 1. 我的理解是 原则上是区分基本类型(ref)和引用类型(reactive)的。功能是一样的，其实是两种风格的代码
@@ -30,7 +31,7 @@ function updatePerson() {
 
 ```
 
-2. ref代码片段 注意ref 必有value
+2. ref 代码片段 注意 ref 必有 value
 
 ```
 <template>
@@ -63,6 +64,7 @@ export default {
 </script>
 
 ```
+
 3. reactive 注意返回对象 形式（toRefs）
 
 ```
@@ -106,22 +108,21 @@ export default {
 
 ```
 
-
 ### 生命周期对应
-|  vue2   | vue3  |
-|  :----:  |:----: |
-| created | setup  |
-| beforeCreate | setup |
-| beforeMount	 |  onBeforeMount |
-| mounted	    |   onMounted |
-| beforeUpdate|	   onBeforeUpdate |
-| updated	     |   onUpdated |
-| beforeDestroy	|   onBeforeUnmount |
-| destroyed	  |     onUnmounted |
-| activated   |   onActivated |
 
+|     vue2      |      vue3       |
+| :-----------: | :-------------: |
+|    created    |      setup      |
+| beforeCreate  |      setup      |
+|  beforeMount  |  onBeforeMount  |
+|    mounted    |    onMounted    |
+| beforeUpdate  | onBeforeUpdate  |
+|    updated    |    onUpdated    |
+| beforeDestroy | onBeforeUnmount |
+|   destroyed   |   onUnmounted   |
+|   activated   |   onActivated   |
 
-onRenderTriggered  新增调试生命周期 
+onRenderTriggered 新增调试生命周期
 
 ```
 import { onMounted, onUpdated, onRenderTriggered } from "vue";
@@ -152,7 +153,7 @@ export default {
 
 ```
 
-### watch 
+### watch
 
 ```
 import { computed, reactive, toRefs, ref, watch } from "vue";
@@ -206,8 +207,8 @@ export default {
 
 ### computed
 
-1. 如果一个对象中包含响应式的属性，需要用computed包裹这个对象返回
-2. 注意 computed  包裹对象后 需要.value
+1. 如果一个对象中包含响应式的属性，需要用 computed 包裹这个对象返回
+2. 注意 computed 包裹对象后 需要.value
 
 ```
 const currentPage = ref(params.currentPage);
@@ -225,11 +226,11 @@ const currentPage = ref(params.currentPage);
 
 ```
 
-
-### hooks  模块化 
+### hooks 模块化
 
 1. 场景：需要抽离一个鼠标位置的功能
-2. 在src/hooks/useMousePosition.ts
+2. 在 src/hooks/useMousePosition.ts
+
 ```
 import { ref, onMounted, onUnmounted } from 'vue'
 
@@ -260,8 +261,8 @@ export default function useMousePosition() {
 
 ```
 <template>
-  <div>  
-    <h1>X:{{x}}, Y:{{y}}</h1>   
+  <div>
+    <h1>X:{{x}}, Y:{{y}}</h1>
   </div>
 </template>
 
@@ -270,18 +271,18 @@ export default {
   name: "App",
   setup() {
     const { x, y } = useMousePosition()
-    return {      
+    return {
       x, y
     };
-  
+
   }
 
 ```
 
-### hooks  模块化 2
+### hooks 模块化 2
 
-1. 场景: 接口请求 loading效果
-2. 在src/hooks/useURLLoader.ts
+1. 场景: 接口请求 loading 效果
+2. 在 src/hooks/useURLLoader.ts
 
 ```
 import axios from 'axios'
@@ -309,11 +310,12 @@ export default function useURLLoader(url: string) {
 ```
 
 3. 在任意组件中使用
+
 ```
 <template>
-  <div id="app">   
+  <div id="app">
     <div v-if="loading">loading</div>
-    <div v-if="loaded"><img :src="result.message" /></div>    
+    <div v-if="loaded"><img :src="result.message" /></div>
   </div>
 </template>
 
@@ -325,10 +327,10 @@ import useURLLoader from './hooks/useURLLoader.ts'
 
 export default {
   name: "App",
-  setup() { 
+  setup() {
     const { result, loading, loaded, error } = useURLLoader('https://dog.ceo/api/breeds/image/random')
 
-  return {      
+  return {
       result,
       loading,
       error,
@@ -338,9 +340,10 @@ export default {
 
 ```
 
+### 一个弹窗组件 teleport（瞬间移动）
 
-###  一个弹窗组件  teleport（瞬间移动）
-1.  在index.html 增加一个空DIV#modal 作为弹窗组件的父级，和#app并列（不会被业务样式干扰）
+1.  在 index.html 增加一个空 DIV#modal 作为弹窗组件的父级，和#app 并列（不会被业务样式干扰）
+
 ```
 <body>
   <noscript>
@@ -353,7 +356,8 @@ export default {
 
 ```
 
-2. modal组件 (teleport用法,emits需要作为一个option  否则报警告)
+2. modal 组件 (teleport 用法,emits 需要作为一个 option 否则报警告)
+
 ```
 <template>
   <teleport to="#modal">
@@ -401,6 +405,7 @@ export default {
 ```
 
 3. 正常在业务组件中使用
+
 ```
 <template>
   <div id="app">
@@ -422,7 +427,8 @@ setup() {
 ```
 
 ### 异步组件 supense
-1. 场景：组件内容需要异步加载  
+
+1. 场景：组件内容需要异步加载
 
 AsyncShow.vue
 
@@ -446,7 +452,8 @@ export default defineComponent({
 </script>
 ```
 
-2. 使用  
+2. 使用
+
 ```
   <template #default>
     <AsyncShow></AsyncShow>
@@ -458,9 +465,9 @@ export default defineComponent({
 
 ```
 
+### createApp
 
-### createApp 
-1. 不同于vue2  属性和方法都在vue上挂在，容易污染全局，vue3通过createApp创建app实例挂载
+1. 不同于 vue2 属性和方法都在 vue 上挂在，容易污染全局，vue3 通过 createApp 创建 app 实例挂载
 
 ```
 import { createApp } from 'vue'
@@ -477,16 +484,18 @@ app.mount('#app')
 
 ```
 
-### VUE3 使用es6 import引入一些行为 可以更好的treeShaking
+### VUE3 使用 es6 import 引入一些行为 可以更好的 treeShaking
+
 ```
 import {nextTick,observable} from 'vue'
 ```
-1. 不同于vue2  使用 Vue.nextTick  Vue.observable这样可以treeShaking
 
+1. 不同于 vue2 使用 Vue.nextTick Vue.observable 这样可以 treeShaking
 
 ### hooks & 点击其他地方 让下拉菜单关闭
 
 1. hooks/useClickOutside.js
+
 ```
 //点击任意位置 看是否在指定元素内 （用做点任意位置收起下拉菜单）
 import { ref, onMounted, onUnmounted } from "vue";
@@ -514,6 +523,7 @@ export default useClickOutside
 ```
 
 2. 使用
+
 ```
 <template>
   <div class="dropdown" ref="dropDownRef">
@@ -568,26 +578,27 @@ export default defineComponent({
 
 ### 组件 v-model
 
-v-model语法语法糖拆解
+v-model 语法语法糖拆解
 
-1. 组件内部input 去掉v-model 改成 :value = "inputRef.val"
-2. 组件内部input 增加 @input方法  其实就是不用v-model语法糖了
-3. 组件内部 props上增加modelValue
-4. 定义@input 方法  并在方法内部emit('update:modelValue')
+1. 组件内部 input 去掉 v-model 改成 :value = "inputRef.val"
+2. 组件内部 input 增加 @input 方法 其实就是不用 v-model 语法糖了
+3. 组件内部 props 上增加 modelValue
+4. 定义@input 方法 并在方法内部 emit('update:modelValue')
 5. 父组件中使用 `<child v-model="emailVal"></child>`
 
 子组件
+
 ```
 <input :value="inputRef.val" @input="updateValue">
 
 
 export default {
-  props: {   
+  props: {
     modelValue: String   //组件绑定v-model 必须这么写
   },
   setup(props, { emit }) {
     const inputRef = reactive({
-      val: props.modelValue || '',     
+      val: props.modelValue || '',
     });
 
     const updateValue = (e) => {
@@ -598,8 +609,11 @@ export default {
 
 ```
 
-父组件
+父组件 直接使用
+
 ```
+<ValidateInput placeholder="shit" v-model="emailVal" :rules="emailRules"></ValidateInput>
+{{emailVal}}
 const emailVal = ref("weibin"); //默认值
 return {
   emailVal
@@ -607,9 +621,94 @@ return {
 
 ```
 
+### 组件 v-model 实践
+
+父组件 可以传递多个 v-model
+
+```
+<div id="app">
+  <h3>vue3自定义组件的v-model</h3>
+  <p>msg: {{msg}} msg1: {{msg1}}</p>
+  <div class="child">
+    <h4>自定义input组件</h4>
+    <custom-input v-model:mv="msg"  v-model:mv1="msg1"></custom-input>
+    <!-- <custom-input :model-value="msg" @update:model-value="msg = $event"></custom-input> -->
+  </div>
+  <p>count: {{count}}</p>
+  <div class="child">
+    <h4>自定义count组件</h4>
+    <custom-count v-model="count"></custom-count>
+    <!-- <custom-count :model-value="count" @update:model-value="count = $event"></custom-count> -->
+  </div>
+</div>
+
+
+<script>
+
+const App = {
+  data(){
+    return {
+      msg: 'Hey! young guy.',
+      msg1:'test',
+      count: 0
+    }
+  }
+};
+
+const app = Vue.createApp(App);
+
+//两种写法 直接子组件用v-model  或者  用拆开的写法 :value="mv1" @input="onNameInput" 可以直接发送给父组件 父组件直接接就完事了 双向绑定
+app.component('custom-input', {
+  props: ['mv','mv1'],
+  computed:{
+    query: {
+      get(){
+        return this.mv
+      },
+      set(v){
+        this.$emit('update:mv', v);
+      }
+    }
+  },
+  methods:{
+    onNameInput(e){
+      console.log(e.target.value)
+      this.$emit('update:mv1',e.target.value)
+    }
+  },
+  template: `
+    <input v-model="query">
+    <input type="text" :value="mv1" @input="onNameInput"/>
+  `,
+});
+
+app.component('custom-count', {
+  props: {
+    modelValue: Number,
+  },
+  methods: {
+    increment() {
+      this.$emit('update:modelValue', ++this.modelValue);
+    },
+    decrement() {
+      this.$emit('update:modelValue', --this.modelValue);
+    },
+  },
+  template: `
+    <button @click="increment">+1</button> ~
+    <button @click="decrement">-1</button>
+    <p>{{modelValue}}</p>
+  `,
+});
+
+app.mount('#app');
+
+```
 
 ### 路由
-1. 路由配置  main.ts
+
+1. 路由配置 main.ts
+
 ```
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -643,8 +742,8 @@ app.use(router)
 app.mount('#app')
 ```
 
+1. 使用 useRoute 获取路由信息
 
-1. 使用useRoute 获取路由信息  
 ```
 import { useRoute } from "vue-router";
 export default defineComponent({
@@ -659,22 +758,22 @@ export default defineComponent({
 //这样页面上就可以通过 route.params.xxx 来获取信息了
 ```
 
-2. 使用  userRouter 来设置路由的行为
+2. 使用 userRouter 来设置路由的行为
+
 ```
 import { useRouter } from "vue-router";
 setup() {
     const router = useRouter();
     //配置路由设置了 path: '/column/:id', 这里必须有params
     router.push({ name: "column", params: { id: 1 } });
-  
+
   }
 ```
-
-
 
 ### vuex
 
 1. main.js
+
 ```
 import store from './store'
 
@@ -685,6 +784,7 @@ app.mount('#app')
 ```
 
 2. store.js
+
 ```
 import { createStore } from 'vuex'
 import { testData, testPosts } from './testData'
@@ -708,11 +808,12 @@ const store = createStore({
   }
 })
 
-export default store 
+export default store
 
 ```
 
 3. 组件内使用
+
 ```
 import { useStore } from "vuex";
 
@@ -727,6 +828,7 @@ setup() {
 ```
 
 commit
+
 ```
 setup() {
   const store = useStore();
@@ -736,8 +838,9 @@ setup() {
 ```
 
 4. getters
-getters的作用是可以将state的值做一些处理 
-否则在多地方用 都要自己写一遍computed处理
+   getters 的作用是可以将 state 的值做一些处理
+   否则在多地方用 都要自己写一遍 computed 处理
+
 ```
 getters: {
     biggerColumnsLen(state) {
@@ -759,7 +862,7 @@ getters: {
 5. getters 也可以是一个函数 传入参数
 
 ```
-getters: {   
+getters: {
     getColumnById(state) {
       return (id: number) => {
         return state.columns.find(c => c.id === id)
@@ -774,11 +877,11 @@ getters: {
 
 ```
 
-使用 
+使用
 
 ```
 setup() {
-    
+
     const store = useStore();
     const currentId = +route.params.id;
 
