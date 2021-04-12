@@ -965,3 +965,34 @@ createApp(App)
 ```
 
 3. 具体代码见 vue3-music base/loading
+
+### 过渡动画
+
+1. 点击按钮进入子路由过渡,屏幕右侧抽屉效果
+
+css
+
+```
+.slide-enter-active,.slide-leave-active {
+  transition:al 0.3s
+}
+
+.slide-enter-from, .slide-leave-to {
+  transform:translate3d(100%,0,0)
+}
+
+```
+
+2. 路由部分
+
+name="slide" slide 对应样式 slide-enter-active....
+appear 代表进入就有动画
+
+```
+<router-view v-slot="{Component}">
+  <transition appear name="slide">
+    <component :is="Component">
+  </transition>
+ </router-view>
+
+```
