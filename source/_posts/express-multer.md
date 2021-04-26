@@ -49,6 +49,10 @@ const app = express()
 app.get('/form', (req, res) => {
   var form = fs.readFileSync('./index.html', { encoding: 'utf-8' })
   res.send(form)
+
+
+  //或者直接使用express提供的sendFile
+  // res.sendFile(__dirname + '/index.html')
 })
 
 //提交的name 是 logo

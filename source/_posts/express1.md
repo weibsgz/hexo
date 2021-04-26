@@ -10,8 +10,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express()
-app.use(bodyParser.urlencoded({ extended: false }))
-//app.use(bodyParser.json()) //如果需要发送JSON数据
+//支持不同的请求体
+app.use(bodyParser.urlencoded({ extended: false })) //application/x-www-form-urlencoded
+//app.use(bodyParser.json()) //如果需要发送JSON数据  application/json
 
 //获取参数 query http://localhost:3333/?a=1
 app.get('/', (req, res) => {
