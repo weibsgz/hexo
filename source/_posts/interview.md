@@ -41,49 +41,54 @@ category: 'js'
 ### 防抖和节流
 
 - 防抖：触发高频事件后 n 秒内函数只会执行一次，如果 n 秒内高频事件再次被触发，则重新计算时间；多应用于 用户输入，防止频繁触发 change 事件
+- 函数在一段时间内的多次调用，仅使得最后一次调用有效
 
 ```
 // 防抖
-function debounce(fn, delay = 500){
-    // timer 是闭包中
-    let timer = null
-    return function(){
-        if(timer){
-            clearTimeout(timer)
-        }
-        timer = setTimeout(()=>{
-            console.log('this',this)
-            fn.apply(this,arguments)
-            timer = null
-        },delay)
+function debounce(func, delay) {
+    var timeout;
+    return function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+            func.apply(this, arguments);
+        }, delay);
     }
 }
-input1.addEventListener('keyup',debounce(function(e){
-    console.log(e.target)
-    console.log(input1.value)
-},600))
 
 ```
 
 - 节流：高频事件触发，但在 n 秒内只会执行一次，所以节流会稀释函数的执行频率。多应用于 拖拽元素 获取位置
+- 函数在一段时间内的多次调用，仅第一次有效。
 
 ```
-const div1 = document.getElementById('div1')
-function throttle(fn,delay=100){
-    let timer = null
-    return function(){
-        if(timer) return
-        timer = setTimeout(() => {
-            fn.apply(this,arguments)
-            timer = null
-        }, delay);
+function throttle(func, delay) {
+    var timer = null;
+    return function () {
+        if (!timer) {
+            func.apply(this, arguments);
+            timer = setTimeout(() => {
+                timer = null;
+            }, delay);
+        } else {
+            console.log("上一个定时器尚未完成");
+        }
     }
-
 }
-div1.addEventListener('drag',throttle(function(e){
-    console.log(e.offsetX,e.offsetY);
-}))
 
+
+//时间戳版
+function throttle(func, delay) {
+    var last = 0;
+    return function () {
+        var now = Date.now();
+        if (now >= delay + last) {
+            func.apply(this, arguments);
+            last = now;
+        } else {
+            console.log("距离上次调用的时间差不满足要求哦");
+        }
+    }
+}
 
 ```
 
