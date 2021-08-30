@@ -112,7 +112,7 @@ function checkPermission(path) {
 }
 // 导航守卫
 router.beforeEach((to, from, next) => {
-  if (checkPermission(to.path)) {
+  if (checkPermission(to.path)) {  //或者直接用 router.hasRoute(to.name)
     document.title = to.meta.title
     next()
   } else {
