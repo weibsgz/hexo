@@ -276,3 +276,72 @@ export default function request(options) {
 
 
 ```
+
+### 将一个 prop 限制在一个类型的列表中
+
+```
+export default {
+  name: 'Image',
+  props: {
+    src: {
+      type: String,
+    },
+    style: {
+      type: String,
+      validator: s => ['square', 'rounded'].includes(s)
+    }
+  }
+};
+
+```
+
+这个验证函数接受一个 prop，如果 prop 有效或无效，则返回 true 或 false。
+
+当单单传入的 true 或 false 来控制某些条件不能满足需求时，我通常使用这个方法来做。
+
+按钮类型或警告类型(信息、成功、危险、警告)是最常见的用法、、。颜色也是一个很好的用途。
+
+### 页面加载进度条
+
+```
+import NProgress from 'nprogress';
+
+router.beforeEach(() => {
+  NProgress.start();
+});
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+
+```
+
+### 移动端 100vh 问题
+
+- 在移动端使用 100vh 时，发现在 Chrome、Safari 浏览器中，因为浏览器栏和一些导航栏、链接栏导致不一样的呈现：
+
+- 你以为的 100vh === 视口高度
+
+- 实际上 100vh === 视口高度 + 浏览器工具栏（地址栏等等）的高度
+
+- 安装 vh-check npm install vh-check \--save
+
+```
+import vhCheck from 'vh-check';
+vhCheck('browser-address-bar');
+
+```
+
+- 定义一个 CSS Mixin
+
+```
+@mixin vh($height: 100vh) {
+  height: $height;
+  height: calc(#{$height} - var(--browser-address-bar, 0px));
+}
+
+
+```
+
+之后就是哪里不会点哪里。
