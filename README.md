@@ -1,6 +1,6 @@
-# hexo
+# hexo 
 
-hexo 静态资源仓，文章更新放这里 1
+hexo 静态资源仓，文章更新放这里 12
 
 1，在别的电脑上安装 hexo   https://weibsgz.github.io/2017/07/15/hexo/   至可以跑出一个新的 hexo 主页
 
