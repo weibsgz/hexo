@@ -81,3 +81,72 @@ initialValue （作为第一次调用 callback 的第一个参数。）
     console.log(ObjToArray(testData2))
 
 ```
+
+
+### 组合三种折扣 取得最后价格
+
+```
+        //商品打九折
+        function discount1(x) {
+            return x * 0.9
+        }
+
+        //满200 - 50
+        function discount2(x) {
+            return x > 200 ? x - 50 : x;
+        }
+
+        //再打九五折
+        function discount3(x) {
+            return x * 0.95
+        }
+
+        function compose(...arguments) {
+            
+            if(arguments.length === 0) {
+                return arg => arg
+            }
+            return arguments.reduce((a,b)=>{
+            
+                return (...args)=>{                  
+                    
+                    return a(b(...args))
+                }
+            })
+        }
+
+        const getPrize = compose(discount3,discount2,discount1)
+
+        console.log( getPrize(200))
+
+
+```
+
+### 扁平化
+
+```
+
+  var arr = [1,[2,3],[4,5,[6,7]]]       
+        
+  function flat(arr) {
+      return arr.reduce((prev,cur)=>{
+        return prev.concat(Array.isArray(cur) ? flat(cur) : cur)
+      },[])
+  }
+  console.log(JSON.stringify(flat(arr)))
+
+
+```
+
+
+###  数组去重
+ ```
+ //数组去重
+        var a = [1,2,3,1,2,4,5]
+        var c = a.reduce((prev,cur)=>{           
+            return prev.includes(cur) ? prev : prev.concat(cur)
+        },[])
+
+        console.log(c)
+
+ ```
