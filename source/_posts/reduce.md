@@ -149,4 +149,39 @@ initialValue （作为第一次调用 callback 的第一个参数。）
 
         console.log(c)
 
+
+  //对象数组去重
+       var arr_obj = [
+            {
+                id:'a',
+                c:'123'
+            },
+            {
+                id:'b',
+                c:'223'
+            },
+            {
+                id:'a',
+                c:'323'
+            }
+        ]
+        var obj = []
+        var _arr_ = function(arr) {           
+            return arr.reduce((prev,cur)=>{               
+            //   obj[cur.id] ? "" : obj[cur.id]=true && prev.push(cur)
+            //   return prev   
+
+            if(!obj.includes(cur.id)) {
+                obj.push(cur.id)
+                prev.push(cur)
+            }
+            return prev
+
+            },[])
+
+          
+        }
+
+        console.log(_arr_(arr_obj))
+
  ```
